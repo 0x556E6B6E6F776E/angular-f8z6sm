@@ -1,0 +1,97 @@
+<div class="card">
+  <div class="header">
+    <h2 class="title">Flight Search</h2>
+  </div>
+
+  <div class="content">
+    <form #form="ngForm">
+      <div class="form-group">
+        <label>From:</label>
+        <input
+          [(ngModel)]="from"
+          name="from"
+          required
+          minlength="3"
+          maxlength="15"
+          pattern="[a-zA-Z ]*"
+          [city]="['Graz', 'Hamburg']"
+          asyncCity
+          class="form-control"
+        />
+        <validation-error
+          [errors]="form?.controls['from']?.errors"
+        ></validation-error>
+      </div>
+      <div class="form-group">
+        <label>To:</label>
+        <input
+          [(ngModel)]="to"
+          name="to"
+          class="form-control"
+          required
+          minlength="3"
+          maxlength="15"
+          pattern="[a-zA-Z ]*"
+          [city]="['Graz', 'Hamburg']"
+          asyncCity
+        />
+        <validation-error
+          [errors]="form?.controls['to']?.errors"
+        ></validation-error>
+      </div>
+
+      <div class="form-group">
+        <button
+          [disabled]="
+            form?.controls['from']?.errors || form?.controls['to']?.errors
+          "
+          (click)="search()"
+          class="btn btn-default"
+        >
+          Search
+        </button>
+        <div>
+          <button class="btn btn-default" (click)="toggelShowDelayed()">
+            <p *ngIf="showStatus == 0">Hide delayed (1/3)</p>
+            <p *ngIf="showStatus == 1">View delayed (2/3)</p>
+            <p *ngIf="showStatus == 2">Show all (3/3)</p>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<flight-edit-form></flight-edit-form>
+
+<div class="card">
+  <div class="row">
+    <div *ngIf="showStatus == 0">
+      <div
+        *ngFor="let flight of flights"
+        class="col-xs-12 col-sm-6 col-md-4 col-lg-3"
+      >
+        <flight-card [item]="flight" [(selected)]="basket[flight.id]">
+        </flight-card>
+      </div>
+    </div>
+    <div *ngIf="showStatus == 1">
+      <div
+        *ngFor="let flight of flights | statusFilter: false"
+        class="col-xs-12 col-sm-6 col-md-4 col-lg-3"
+      >
+        <flight-card [item]="flight" [(selected)]="basket[flight.id]">
+        </flight-card>
+      </div>
+    </div>
+    <div *ngIf="showStatus == 2">
+      <div
+        *ngFor="let flight of flights | statusFilter: true"
+        class="col-xs-12 col-sm-6 col-md-4 col-lg-3"
+      >
+        <flight-card [item]="flight" [(selected)]="basket[flight.id]">
+        </flight-card>
+      </div>
+    </div>
+  </div>
+</div>

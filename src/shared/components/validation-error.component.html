@@ -1,0 +1,21 @@
+<div class="text-danger">
+  <div *ngIf="errors && errors['required']">This field is required.</div>
+
+  <div *ngIf="errors && errors['minlength']">
+    Atleast three characters needed.
+  </div>
+
+  <div *ngIf="errors && errors['pattern']">Only letters are allowed.</div>
+
+  <div *ngIf="errors && errors['city']">The City you entered is invalid.</div>
+
+  <div *ngIf="errors && errors['pending']">Pending check...</div>
+
+  <div *ngIf="errors && errors['asyncCity']">
+    The City you entered is invalid.
+  </div>
+
+  <div *ngIf="errors && errors['roundTrip']">
+    Your start and desitnation are the same.
+  </div>
+</div>
